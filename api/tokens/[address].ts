@@ -1,5 +1,5 @@
+import { type Address, isAddress } from "@solana/kit";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { isAddress, type Address } from "@solana/kit";
 
 // Ensure BigInt can be serialized to JSON
 // @ts-expect-error

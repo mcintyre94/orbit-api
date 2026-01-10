@@ -6,7 +6,7 @@
 	"main": "index.js",
 	"scripts": {
 		"check": "biome check",
-		"format:fix": "biome format --fix",
+		"check:fix": "biome check --write",
 		"build": "tsc"
 	},
 	"keywords": [],
