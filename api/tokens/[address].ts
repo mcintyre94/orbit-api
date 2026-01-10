@@ -33,6 +33,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
 	try {
 		const tokens = await fetchTokens(address, jupiterApiKey);
+		res.setHeader("Cache-Control", "public, max-age=60");
 		res.status(200).json({ tokens });
 	} catch (error) {
 		console.error("Error fetching tokens:", error);
