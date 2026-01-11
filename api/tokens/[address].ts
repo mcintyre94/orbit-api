@@ -7,7 +7,34 @@ BigInt.prototype.toJSON = function () {
 	return this.toString();
 };
 
+const ALLOWED_ORIGINS: string[] = [];
+
+function isAllowedOrigin(origin: string | undefined): string | null {
+	if (!origin) return null;
+	if (ALLOWED_ORIGINS.includes(origin)) return origin;
+	if (/^http:\/\/localhost(:\d+)?$/.test(origin)) return origin;
+	return null;
+}
+
+function setCorsHeaders(req: VercelRequest, res: VercelResponse): void {
+	const origin = req.headers.origin;
+	const allowedOrigin = isAllowedOrigin(origin);
+
+	if (allowedOrigin) {
+		res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+		res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+		res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+	}
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+	setCorsHeaders(req, res);
+
+	if (req.method === "OPTIONS") {
+		res.status(204).send(null);
+		return;
+	}
+
 	if (!req.method || req.method !== "GET") {
 		res.status(405).send(null);
 		return;
