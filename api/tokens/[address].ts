@@ -8,6 +8,11 @@ BigInt.prototype.toJSON = function () {
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+	if (!req.method || req.method !== "GET") {
+		res.status(405).send(null);
+		return;
+	}
+
 	const { address } = req.query;
 
 	if (!address) {
